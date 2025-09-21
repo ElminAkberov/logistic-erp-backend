@@ -10,10 +10,11 @@ export interface IShipment extends Document {
 }
 
 const shipmentSchema = new Schema<IShipment>({
-    orderId: { type: Schema.Types.ObjectId, ref: "Order", required: true, unique: true },
-    carrier: { type: String, required: true },
-    status: { type: String, enum: ["In Transit", "Delivered", "Pending Pickup"], default: "Pending Pickup" },
-    estimatedDelivery: { type: Date, required: true },
-}, { timestamps: true });
+    orderId: { type: Schema.Types.ObjectId, ref: "Order", required: true },
+    carrier: String,
+    status: { type: String, default: "In Transit" },
+    createdAt: { type: Date, default: Date.now },
+    estimatedDelivery: { type: Date, required: true }
+});
 
 export default mongoose.model<IShipment>("Shipment", shipmentSchema);
