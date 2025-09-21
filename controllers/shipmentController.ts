@@ -12,10 +12,18 @@ export const getShipmentById = async (req: Request, res: Response) => {
 };
 
 export const createShipment = async (req: Request, res: Response) => {
+  const { orderId } = req.body;
+
+  const existing = await Shipment.findOne({ orderId });
+  if (existing) {
+    return res.status(400).json({ message: "This order already has a shipment." });
+  }
+
   const newShipment = new Shipment(req.body);
   await newShipment.save();
   res.status(201).json(newShipment);
 };
+
 
 export const updateShipment = async (req: Request, res: Response) => {
   const updated = await Shipment.findByIdAndUpdate(req.params.id, req.body, { new: true });
